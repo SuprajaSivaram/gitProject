@@ -1,0 +1,30 @@
+When the project is using Spring 4.3  and Hibernate 5.2, how to write the JUnit test without bounded with concrete DB closely. 
+In other words, How to mock DB in JUnit test for service method. 
+If not possible give the reason else list cases for the different scenario.
+
+
+
+ANSWER:
+
+For unit testing purposes, the database has to be mocked with the help of frameworks like Mockito or JMockit.
+In my current project, we use JMockit. The jar is included in the Maven dependency list. 
+All the mock data is stored in an XML file.
+For specifying the filename to be included for a given test class, we specify: 
+@DataSetLocation(value = "classpath:/datasets/testItems.xml")
+Having this annotation at the class level causes the data set to be loaded for every test in the class. 
+If only few tests require the data, the annotation must be used at the test level instead of the class level.
+
+For mocking the tables in the DB, we have a configuration class in which we define the data source pointing to a ddl file. 
+This file has our table structure. We use the following annotations.
+@Configuration
+@EnableTransactionManagement
+@Profile("db-unit-test")
+
+This would replace the real configuration with a mocked one. 
+Also, we need to ensure that we are creating a mocked version of the bean class.
+@Bean(name = "MyBean")
+ 
+Whenever there is a dependency, we mock it and only concentrate on the behavior of the unit under test.
+In JMockit, @Mocked, @Injectable and @Capturing are mocking annotations. They create mocked instances that can be used in the test code.
+We also provide Expectations, wherein a set of invocations/calls relevant to the test are given. @Injectable has to be present to include
+mocked instances into the test object. 
