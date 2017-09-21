@@ -17,11 +17,14 @@ class MultiDimensionArray {
      * NOTE: Cannot be static because we are not specifying which object the method is operating on 
      * Or else the object can be passed as parameter
      */
+
+    /* GIVEN METHOD:
     public static Long getValue(int... indexOfDimension) {
         //... 
         return value;
     }
-    
+    */
+
     /** REMOVING STATIC
      * @param indexOfDimension
      * @return Value at the specific dimension
